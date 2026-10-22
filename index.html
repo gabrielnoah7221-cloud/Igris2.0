@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#03101d">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>IGRIS — Personal Evolution System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap');
+:root{
+ --bg:#020a13;--panel:#061522;--panel2:#081d30;--line:#0e4267;
+ --blue:#22c9ff;--blue2:#087ff0;--text:#eaf7ff;--muted:#7795ab;
+ --red:#ff4969;--green:#22e0b1;--purple:#ae63ff;--gold:#ffc64c;
+}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Rajdhani,Arial,sans-serif}
+body{min-height:100vh;background:
+ radial-gradient(circle at 50% -5%,#0b3154 0,#020a13 38%),
+ linear-gradient(#020a13,#020a13)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;
+ background-image:linear-gradient(#37bfff 1px,transparent 1px),linear-gradient(90deg,#37bfff 1px,transparent 1px);
+ background-size:34px 34px}
+button,input{font:inherit}.app{max-width:760px;margin:auto;padding:10px 12px 92px}
+.top{height:58px;display:flex;align-items:center;justify-content:space-between}
+.user{display:flex;align-items:center;gap:9px}.avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;border:1px solid #268cc8}
+.name{font-weight:700;font-size:17px}.sub{font:10px "Share Tech Mono";color:#7e9cb2}
+.count{text-align:right;font-size:10px;color:#75a1bd}.count strong{display:block;color:#fff;font-size:16px}
+.screen{display:none}.screen.active{display:block}
+.hero{height:330px;border-radius:20px;overflow:hidden;position:relative;border:1px solid #15547f;background:#03101d}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:center 38%;opacity:.76}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#020a1300 35%,#020a13 98%),linear-gradient(90deg,#020a1380,#020a1300)}
+.heroText{position:absolute;z-index:2;bottom:20px;left:18px;right:18px;text-align:center}
+.quote{font-size:15px;line-height:1.15;text-shadow:0 2px 12px #000}.quote em{font-style:normal;color:#6edfff}
+.sys{margin-top:-2px;border:1px solid #1a91d0;border-radius:15px;background:linear-gradient(135deg,#071d31,#06101e);padding:13px;position:relative;z-index:3}
+.levelrow{display:flex;align-items:center;gap:11px}.badge{width:57px;height:57px;border:1px solid #26cfff;border-radius:14px;display:grid;place-items:center;color:#58ddff;box-shadow:inset 0 0 20px #00aaff15}
+.level{font-size:18px;font-weight:700}.rank{margin-left:auto;border:1px solid #2a78ae;border-radius:10px;padding:7px 11px;text-align:center;font-weight:700}
+.bar{height:7px;background:#0a2942;border-radius:8px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;background:linear-gradient(90deg,#087ff0,#49e5ff);box-shadow:0 0 10px #1ccfff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:9px}.stat{background:linear-gradient(145deg,#071b2c,#04101c);border:1px solid #113f60;border-radius:13px;padding:10px;text-align:center}.stat .ico{font-size:19px}.stat b{display:block;font-size:19px}.stat span{font-size:9px;color:#7897ad;letter-spacing:1px}
+.card{background:linear-gradient(145deg,#061725f2,#04101cf2);border:1px solid #103e60;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 8px 28px #00182a22}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.title{font-size:17px;font-weight:700}.muted{font-size:11px;color:var(--muted)}.link{color:#50d8ff;font-size:11px}
+.quest{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #ffffff09}.quest:last-child{border:0}.qico{width:37px;height:37px;border-radius:10px;background:#09243a;border:1px solid #18567f;display:grid;place-items:center}.qbody{flex:1}.qbody b{font-size:14px}.xp{font-size:10px;color:#75c8e8}.miniBtn{border:1px solid #1689c9;background:#061c30;color:#60ddff;border-radius:8px;padding:7px 10px}
+.progressText{font-size:10px;color:#7c9bb1}.sectionTitle{margin:8px 2px 4px;font-size:12px;color:#6fb7d8;letter-spacing:2px}
+.subject{padding:12px 0;border-bottom:1px solid #ffffff09}.subject:last-child{border:0}
+.subjectHead{display:flex;justify-content:space-between}.subjectHead b{font-size:14px}.subjectHead span{font-size:11px;color:#7ccff1}
+.metricGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{background:#061a2b;border:1px solid #103f62;border-radius:13px;padding:13px}.metric b{display:block;font-size:22px}.metric span{font-size:10px;color:var(--muted)}
+.mock{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #ffffff09}.mock:last-child{border:0}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{display:block;font-size:10px;color:var(--muted)}.field input{width:100%;margin-top:4px;background:#020b15;color:#fff;border:1px solid #12486c;border-radius:9px;padding:9px}
+.primary{border:0;border-radius:10px;padding:10px 14px;background:linear-gradient(90deg,#0878bd,#18bde9);color:#00101a;font-weight:700}.full{width:100%;margin-top:10px}
+.bossArt{height:140px;width:100%;object-fit:cover;border-radius:12px;opacity:.68}
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ach div{border:1px solid #16486a;background:#061729;border-radius:12px;padding:11px 6px;text-align:center}.ach .aico{font-size:23px}.ach b{display:block;font-size:11px}.ach small{font-size:9px;color:#7694a8}
+.week{margin:10px 0}.week .row{font-size:12px}.week .bar{margin-top:5px}
+.moreRow{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid #ffffff09;font-size:13px}.moreRow:last-child{border:0}
+.bottom{position:fixed;z-index:50;bottom:8px;left:50%;transform:translateX(-50%);width:min(730px,calc(100% - 16px));background:#03101df4;border:1px solid #15496c;border-radius:18px;padding:5px;display:grid;grid-template-columns:repeat(5,1fr);backdrop-filter:blur(15px)}
+.bottom button{border:0;background:none;color:#66869c;padding:7px 2px;font-size:10px}.bottom button.active{color:#5bddff;text-shadow:0 0 10px #22c9ff}.bottom .bi{display:block;font-size:18px;margin-bottom:2px}
+.toast{position:fixed;z-index:80;top:16px;left:50%;transform:translate(-50%,-20px);opacity:0;transition:.2s;background:#072238;border:1px solid #28cfff;border-radius:10px;padding:9px 14px}.toast.show{opacity:1;transform:translate(-50%,0)}
+.splash{position:fixed;z-index:100;inset:0;background:#020a13;transition:.5s}.splash.hide{opacity:0;pointer-events:none}.splash img{width:100%;height:100%;object-fit:cover;opacity:.72}.splashText{position:absolute;bottom:12%;width:100%;text-align:center}.splashText h1{font-size:46px;letter-spacing:11px;margin:5px}.loader{width:190px;height:3px;background:#0a2940;margin:12px auto}.loader i{display:block;height:100%;width:42%;background:#2ad4ff;animation:ld 1.2s infinite}@keyframes ld{50%{transform:translateX(112px)}}
+@media(max-width:460px){.hero{height:300px}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="splash" id="splash"><img src="./splash.jpg"><div class="splashText"><div class="muted">PERSONAL EVOLUTION SYSTEM</div><h1>IGRIS</h1><div class="muted">Loading your journey...</div><div class="loader"><i></i></div></div></div>
+
+<div class="app">
+<div class="top">
+ <div class="user"><img class="avatar" src="./icon-192.png"><div><div class="name">Sadeeq</div><div class="sub">Lv. <span id="topLevel">1</span> | <span id="topRank">E</span> Rank</div></div></div>
+ <div class="count">NEET 2027 🗓️<strong id="days">— DAYS</strong></div>
+</div>
+
+<section class="screen active" id="home">
+ <div class="hero"><img src="./hero.jpg"><div class="heroText"><div class="quote">“Discipline today,<br><em>Freedom tomorrow.</em>”</div><div class="muted">— Igris</div></div></div>
+ <div class="sys"><div class="levelrow"><div class="badge">◆<br><small>LV <span id="level">1</span></small></div><div style="flex:1"><div class="level">LEVEL <span id="level2">1</span></div><div class="bar"><i id="xpBar"></i></div><div class="progressText"><span id="xpNow">0</span> / <span id="xpNeed">1000</span> XP</div></div><div class="rank" id="rank">E<br><small>RANK</small></div></div></div>
+ <div class="stats">
+  <div class="stat"><div class="ico" style="color:var(--red)">♟</div><b id="str">10</b><span>STR</span></div>
+  <div class="stat"><div class="ico" style="color:var(--green)">♥</div><b id="vit">10</b><span>VIT</span></div>
+  <div class="stat"><div class="ico" style="color:var(--blue)">♧</div><b id="int">10</b><span>INT</span></div>
+  <div class="stat"><div class="ico" style="color:var(--gold)">✦</div><b id="disc">10</b><span>DISC</span></div>
+ </div>
+ <div class="card"><div class="row"><div class="title">DAILY QUESTS</div><div class="link" onclick="go('quests')">VIEW ALL ›</div></div><div id="homeQuests"></div></div>
+</section>
+
+<section class="screen" id="status">
+ <div class="card"><div class="title">STATUS</div><div class="muted">Your current stats & progress</div><div class="sys" style="margin-top:10px"><div class="levelrow"><div class="badge">◆</div><div style="flex:1"><div class="level">Lv. <span id="sLevel">1</span> &nbsp;|&nbsp; <span id="sRank">E</span> Rank</div><div class="bar"><i id="sBar"></i></div><div class="progressText" id="sXp">0 / 1000 XP</div></div></div></div><div id="statusStats"></div></div>
+ <div class="card"><div class="title">NEXT LEVEL</div><div class="muted">Reach <span id="nextXp">1000</span> XP to level up</div><div class="bar"><i id="nextBar"></i></div></div>
+ <div class="card"><div class="row"><div><div class="title">🔥 Streak</div><div class="muted">Keep going!</div></div><strong id="streak">0 Days</strong></div></div>
+</section>
+
+<section class="screen" id="quests">
+ <div class="card"><div class="title">DAILY QUESTS</div><div class="muted">Complete quests • Earn XP • Level Up</div><div id="allQuests"></div><button class="primary full" onclick="claimAll()">🎁 CLAIM ALL REWARDS</button></div>
+</section>
+
+<section class="screen" id="chapters">
+ <div class="card"><div class="title">NEET PROGRESS</div><div class="muted">Syllabus Completion</div><div id="subjects"></div><div style="text-align:center;margin:18px"><div id="overall" style="font-size:30px;color:var(--blue)">0%</div><div class="muted">Overall Completion</div></div></div>
+ <div class="card"><div class="title">MCQ TRACKER</div><div class="metricGrid"><div class="metric"><b id="totalMcq">0</b><span>Total MCQs</span></div><div class="metric"><b id="correctMcq">0</b><span>Correct</span></div><div class="metric"><b id="accuracy">0%</b><span>Accuracy</span></div><div class="metric"><b id="weekMcq">0</b><span>This Week</span></div></div><button class="primary full" onclick="addMcq()">＋ ADD MCQs</button></div>
+ <div class="card"><div class="title">MOCK TESTS</div><div id="mocks"></div><button class="primary full" onclick="addMock()">＋ ADD MOCK TEST</button></div>
+</section>
+
+<section class="screen" id="more">
+ <div class="card"><div class="title">BODY / FITNESS</div><div class="metricGrid"><div class="metric"><b id="weight">—</b><span>Weight</span></div><div class="metric"><b id="workout">0</b><span>Workout min</span></div><div class="metric"><b id="steps">0</b><span>Steps</span></div><div class="metric"><b id="sleep">0</b><span>Sleep</span></div></div><button class="primary full" onclick="logBody()">＋ LOG BODY DATA</button></div>
+ <div class="card"><div class="title">WEEKLY BOSS</div><img class="bossArt" src="./hero.jpg"><div id="boss"></div></div>
+ <div class="card"><div class="title">ACHIEVEMENTS</div><div class="ach" id="achievements"></div></div>
+ <div class="card"><div class="title">MORE</div><div class="moreRow">⚙️ Settings <span>›</span></div><div class="moreRow">💾 Data Backup <span>›</span></div><div class="moreRow">🌙 Theme <span>Dark</span></div><div class="moreRow">ℹ️ About Igris <span>›</span></div><button class="miniBtn" onclick="resetData()">Reset Local Data</button></div>
+</section>
+</div>
+
+<nav class="bottom">
+<button class="active" data-screen="home" onclick="go('home')"><span class="bi">⌂</span>Home</button>
+<button data-screen="status" onclick="go('status')"><span class="bi">♟</span>Status</button>
+<button data-screen="quests" onclick="go('quests')"><span class="bi">✓</span>Quests</button>
+<button data-screen="chapters" onclick="go('chapters')"><span class="bi">▣</span>Chapters</button>
+<button data-screen="more" onclick="go('more')"><span class="bi">☰</span>More</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY="igris-v4";
+const Q=[["Study 7 Hours",300,"📚"],["MCQs 160",250,"🧠"],["Workout 30+ Min",150,"⚔️"],["Sleep 7+ Hours",100,"🌙"],["Mistake Revision 30 Min",120,"🎯"]];
+const CH={Physics:["Physics & Measurement","Kinematics","Laws of Motion","Work, Energy & Power","Rotational Motion","Gravitation","Thermodynamics","Electrostatics","Current Electricity","Magnetism","EMI","Optics","Modern Physics"],Chemistry:["Some Basic Concepts","Structure of Atom","Periodicity","Chemical Bonding","Thermodynamics","Equilibrium","Redox","Solutions","Electrochemistry","Kinetics","Coordination","Organic Basics","Hydrocarbons","Biomolecules"],Biology:["Diversity","Structural Organisation","Cell","Plant Physiology","Human Physiology","Reproduction","Genetics","Evolution","Biotechnology","Ecology"]};
+let d=JSON.parse(localStorage.getItem(KEY)||'{"xp":0,"stats":{"str":10,"vit":10,"int":10,"disc":10},"logs":{},"done":{},"chap":{},"mocks":[],"events":[]}');
+const today=()=>new Date().toISOString().slice(0,10);
+function save(){localStorage.setItem(KEY,JSON.stringify(d));render()}
+function level(){let l=1,x=d.xp;while(x>=l*1000){x-=l*1000;l++}return[l,x,l*1000]}
+function rank(l){return l>=30?"S":l>=20?"A":l>=12?"B":l>=7?"C":l>=3?"D":"E"}
+function keys7(){let a=[],x=new Date();for(let i=0;i<7;i++){a.push(x.toISOString().slice(0,10));x.setDate(x.getDate()-1)}return a}
+function days(){return Math.max(0,Math.ceil((new Date("2027-05-02T00:00:00")-new Date())/86400000))}
+function streak(){let n=0,x=new Date();while(true){let k=x.toISOString().slice(0,10);if(!(d.logs[k]||d.done[k]))break;n++;x.setDate(x.getDate()-1)}return n}
+function go(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".bottom button").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));scrollTo({top:0,behavior:"smooth"})}
+function toast(t){let e=document.getElementById("toast");e.textContent=t;e.classList.add("show");setTimeout(()=>e.classList.remove("show"),1400)}
+function clearQuest(i){let k=today();d.done[k]=d.done[k]||[];if(d.done[k].includes(i))return toast("Quest already cleared");d.done[k].push(i);d.xp+=Q[i][1];d.stats.dis++;if(i<2)d.stats.int++;if(i===2)d.stats.str++;if(i===3)d.stats.vit++;d.events.unshift("Quest cleared: "+Q[i][0]);save();toast("+"+Q[i][1]+" XP")}
+function claimAll(){Q.forEach((q,i)=>{let k=today();d.done[k]=d.done[k]||[];if(!d.done[k].includes(i)){d.done[k].push(i);d.xp+=q[1]}});save();toast("Rewards claimed")}
+function addMcq(){let total=prompt("Total MCQs?","160");if(total===null)return;let correct=prompt("Correct MCQs?","120");if(correct===null)return;let k=today();d.logs[k]={...(d.logs[k]||{}),mcq:(d.logs[k]?.mcq||0)+(+total||0),correct:(d.logs[k]?.correct||0)+(+correct||0)};d.xp+=Math.min(250,Math.round((+total||0)*.5));d.stats.int++;save();toast("MCQs added")}
+function addMock(){let score=prompt("Mock score /720?","600");if(score===null)return;let s=Math.max(0,Math.min(720,+score||0));d.mocks.unshift({score:s,date:today()});d.xp+=Math.round(s*.4);d.stats.int++;save();toast("Mock added")}
+function logBody(){let w=prompt("Weight (kg)?","65");if(w===null)return;let wo=prompt("Workout minutes?","30"),st=prompt("Steps?","6000"),sl=prompt("Sleep hours?","7");d.logs[today()]={...(d.logs[today()]||{}),weight:+w,workout:+wo||0,steps:+st||0,sleep:+sl||0};d.stats.dis++;if(+wo>=30)d.stats.str++;if(+sl>=7)d.stats.vit++;save();toast("Body log saved")}
+function toggleChapter(sub,i){d.chap[sub]=d.chap[sub]||[];let a=d.chap[sub];if(a.includes(i))a.splice(a.indexOf(i),1);else{a.push(i);d.xp+=50}save()}
+function resetData(){if(confirm("Reset all IGRIS V4 data?")){localStorage.removeItem(KEY);location.reload()}}
+function render(){
+ let [l,x,n]=level(),r=rank(l),k=today(),v=d.logs[k]||{},done=d.done[k]||[];
+ document.getElementById("topLevel").textContent=l;document.getElementById("topRank").textContent=r;document.getElementById("days").textContent=days()+" DAYS";
+ ["level","level2"].forEach(id=>document.getElementById(id).textContent=l);
+ document.getElementById("rank").innerHTML=r+"<br><small>RANK</small>";
+ document.getElementById("xpNow").textContent=x;document.getElementById("xpNeed").textContent=n;document.getElementById("xpBar").style.width=(x/n*100)+"%";
+ ["str","vit","int","disc"].forEach(id=>document.getElementById(id).textContent=d.stats[id]);
+ document.getElementById("sLevel").textContent=l;document.getElementById("sRank").textContent=r;document.getElementById("sXp").textContent=x+" / "+n+" XP";document.getElementById("sBar").style.width=x/n*100+"%";document.getElementById("nextXp").textContent=n;document.getElementById("nextBar").style.width=x/n*100+"%";document.getElementById("streak").textContent=streak()+" Days";
+ const qhtml=Q.map((q,i)=>`<div class="quest"><div class="qico">${q[2]}</div><div class="qbody"><b>${q[0]}</b><div class="bar"><i style="width:${done.includes(i)?100:0}%"></i></div><span class="xp">+${q[1]} XP</span></div><button class="miniBtn" onclick="clearQuest(${i})">${done.includes(i)?"✓":"+"}</button></div>`).join("");
+ document.getElementById("homeQuests").innerHTML=qhtml;document.getElementById("allQuests").innerHTML=qhtml;
+ document.getElementById("statusStats").innerHTML=[["STR","Fitness / Strength","str"],["VIT","Health / Recovery","vit"],["INT","Study / Knowledge","int"],["DISC","Consistency / Streak","disc"]].map(a=>`<div class="quest"><div style="font-size:20px">${a[0]==="STR"?"♟":a[0]==="VIT"?"♥":a[0]==="INT"?"♧":"✦"}</div><div class="qbody"><b>${a[0]}</b><div class="muted">${a[1]}</div></div><strong style="color:var(--blue)">${d.stats[a[2]]}</strong></div>`).join("");
+ let total=0,doneN=0;
+ document.getElementById("subjects").innerHTML=Object.entries(CH).map(([s,a])=>{let c=(d.chap[s]||[]).length;total+=a.length;doneN+=c;let color=s==="Physics"?"var(--purple)":s==="Chemistry"?"var(--green)":"#c56cff";return `<div class="subject"><div class="subjectHead"><b><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${color}"></span> ${s}</b><span>${c}/${a.length} chapters</span></div><div class="bar"><i style="width:${c/a.length*100}%;background:${color}"></i></div>${a.slice(0,6).map((z,i)=>`<div class="row" style="padding:5px 0"><span class="muted">${z}</span><button class="miniBtn" onclick="toggleChapter('${s}',${i})">${(d.chap[s]||[]).includes(i)?"✓":"+"}</button></div>`).join("")}</div>`}).join("");
+ document.getElementById("overall").textContent=Math.round(doneN/total*100)+"%";
+ let mc=keys7().reduce((s,key)=>s+(d.logs[key]?.mcq||0),0),cor=keys7().reduce((s,key)=>s+(d.logs[key]?.correct||0),0);
+ document.getElementById("totalMcq").textContent=mc;document.getElementById("correctMcq").textContent=cor;document.getElementById("accuracy").textContent=(mc?Math.round(cor/mc*100):0)+"%";document.getElementById("weekMcq").textContent=mc;
+ document.getElementById("mocks").innerHTML=d.mocks.length?d.mocks.slice(0,8).map((m,i)=>`<div class="mock"><span>Mock #${d.mocks.length-i}<br><small class="muted">${m.date}</small></span><b>${m.score}/720</b><span class="xp">${Math.round(m.score/720*100)}%</span></div>`).join(""):"<div class='muted'>No mock tests yet.</div>";
+ document.getElementById("weight").textContent=v.weight?v.weight+" kg":"—";document.getElementById("workout").textContent=v.workout||0;document.getElementById("steps").textContent=v.steps||0;document.getElementById("sleep").textContent=v.sleep?(v.sleep+"h"):"0";
+ let study=keys7().reduce((s,key)=>s+(d.logs[key]?.study||0),0),workouts=keys7().filter(key=>(d.logs[key]?.workout||0)>=30).length;
+ document.getElementById("boss").innerHTML=[["35+ Study Hours",study,35],["700+ MCQs",mc,700],["3+ Workouts",workouts,3]].map(a=>`<div class="week"><div class="row"><span>${a[0]}</span><b>${Math.min(a[1],a[2])} / ${a[2]}</b></div><div class="bar"><i style="width:${Math.min(100,a[1]/a[2]*100)}%"></i></div></div>`).join("");
+ document.getElementById("achievements").innerHTML=[["🏅","First Step",d.xp>0],["🌅","Early Bird",streak()>=3],["🔥","Consistent",streak()>=7],["🧠","MCQ Champion",mc>=500],["📚","Study Beast",mc>=1000],["💪","Fitness Freak",d.stats.str>10],["🎯","Mock Master",d.mocks.length>=5],["⚔️","NEET Warrior",d.xp>=5000],["👑","Legend",l>=20]].map(a=>`<div style="opacity:${a[2]?1:.4}"><div class="aico">${a[0]}</div><b>${a[1]}</b><small>${a[2]?"Completed":"In Progress"}</small></div>`).join("");
+}
+setTimeout(()=>document.getElementById("splash").classList.add("hide"),1500);
+if("serviceWorker"in navigator)navigator.serviceWorker.register("./sw.js").catch(()=>{});
+render();
+</script>
+</body>
+</html>
